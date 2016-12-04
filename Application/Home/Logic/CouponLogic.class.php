@@ -19,9 +19,10 @@ class CouponLogic
     public function getMenuData($params){
     	$data = array();
         extract($params);
+        $p = $p ? $p : $_GET['p'];
         // 优惠卷模型
         $couponModel = M('coupon');
-        $whereStr = " 1 ".$this->getTimeCondition();
+        $whereStr = " 1 ";//.$this->getTimeCondition();
         $rows = $rows ? $rows : 24 ;
         // 排序
         $orderStr = $this->getOrderStr($params);
@@ -30,7 +31,7 @@ class CouponLogic
         $count = $couponModel->where($whereStr)->count();
         $Page = new \Think\Page($count,$rows);
         // 缓存key
-        $dataKey = $whereStr.$orderStr.$_GET['p'];
+        $dataKey = $whereStr.$orderStr.$p;
         if ( $tmpData = S($dataKey) ) {
         	return json_decode($tmpData, true);
         }
@@ -104,8 +105,8 @@ class CouponLogic
 	/**
 	 * 检查优惠卷是否用完
 	 */
-    public function checkCoupon($id = 0){
-    	$coupon_url = M('coupon')->where(array('id'=>$id))->getField('coupon_url');
+    public function checkCoupon($id = 0, $coupon_url = ''){
+    	!$coupon_url && $coupon_url = M('coupon')->where(array('id'=>$id))->getField('coupon_url');
     	if ( !$coupon_url ) return array();
     	preg_match('/e\=(.*)&pid/', $coupon_url, $e);
     	$ch = curl_init();
@@ -117,7 +118,19 @@ class CouponLogic
     	$res = http($url, $getParams);
     	return json_decode($res,true);
     }
-
+	/**
+	 * 格式化数据，检测优惠卷信息
+	 */
+    public function formatData( $params ){
+    	$data = array();
+    	if ( !$params ) return $data;
+    	foreach ( $params as $key => $val ) {
+			$data[$key] = $val;
+			preg_match('/(\d{1,3}).*(\d{1,3})/', $val['coupon_money'], $coupon_num);
+			$data[$key]['coupon_money_num'] = array_pop($coupon_num);
+    	}
+    	return $data;
+    }
 
 
 }

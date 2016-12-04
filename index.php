@@ -18,11 +18,11 @@ if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
 if ($_SERVER['HTTP_HOST']=='localhost') {
 	define('DEV', true);
 	define('APP_DEBUG',true);
-	define('__ROOT___', '127.0.0.1/');
+// 	define('__ROOT__', '127.0.0.1/');
 }else{
 	define('DEV', false);
 	define('APP_DEBUG',false);
-	define('__ROOT___', 'http://www.baguawu.cn/');
+// 	define('__ROOT__', 'http://www.juanzhuzhu.cn/');
 }
 // 定义应用目录
 define('APP_PATH','./Application/');

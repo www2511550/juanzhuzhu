@@ -5,6 +5,12 @@ use Think\Controller;
 
 class IndexController extends BaseController
 {
+	public function __construct(){
+		parent::__construct();
+		if( is_mobile() ){
+			redirect(U('Wap/index'));
+		}
+	}
 
     /**
      * 优惠券

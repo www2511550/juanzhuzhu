@@ -122,9 +122,17 @@ ul.banner>li>a>img{
 	text-decoration: line-through;
 }
 .one_out .price a.buy{
-	display: inline-block;width: 40px;height: 20px;background: #f8285c;position: absolute;right: 10px;bottom: 8px;
-	color: #fff;text-align: center;line-height: 20px;border-radius: 2px;
+	display: inline-block;width: 60px;height: 25px;background: #f8285c;position: absolute;right: 10px;bottom: 8px;
+	color: #fff;text-align: center;line-height: 25px;border-radius: 2px;font-size:14px;
 }
 
 
 /*中间商品展示区块结束*/
+
+
+.toTop{
+	display:inline-block;width:33px;height:33px;position:fixed;right:5%;bottom:5%;border-radius:50%;
+	background:url('../../images/top.png') center;background-repeat: no-repeat;}
+}
+
+

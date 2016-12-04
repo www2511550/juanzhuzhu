@@ -5,33 +5,37 @@
 	<meta name="viewport" content="width=device-width,user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<title>八卦屋(baguwu.com)-购物省钱网站</title>
+	<title>卷猪猪(juanzhuzhu.com)-购物省钱网站</title>
 	<link rel="icon" href="__PUBLIC__/wap/imgs/fav.ico" mce_href="__PUBLIC__/imgs/fav.ico" type="image/x-icon">
 	<import type='css' file='wap/css/index'/>
 	<import type='js' file='wap/jquery172'/>
 </head>
 <body style="background:#EDECEA" onload='cc._init()'>
 <!-- 头部区块 -->
-<div class="header_out">
+<div class="header_out" mid="{:I('mid',1)}">
 	<!-- 头部搜索区块 -->
 	<div class="top_out_rel" id="top">
 		<div class="top_left">
-			<p class="logo"><img src="__PUBLIC__/wap/imgs/logo.png" alt=""></p>
+			<p class="logo">&nbsp;&nbsp;<a href="__ROOT__"><img src="__PUBLIC__/wap/imgs/logo.jpg" height="32" alt=""></a></p>
 		</div>
+	<form action="">	
 		<div class="top_center">
-			<input type="text" name="keywords" class="s_txt" placeholder="T恤 男 黑色" >
+			<input type="text" name="kw" class="s_txt" placeholder="T恤 男 黑色" >
 			<input type="submit" class="s_btn" value="">
 		</div>
+	</form>
 		<!-- 菜单列表 -->
 		<div class="top_right">
 			<a href="javascript:;" onclick="cc.menu()"><img src="__PUBLIC__/wap/imgs/more.png" alt=""></a>
 			<div class="menu">
 				<ul>
-					<li><a href="">菜单一号</a></li>
-					<li><a href="">菜单一号</a></li>
-					<li><a href="">菜单一号</a></li>
-					<li><a href="">菜单一号</a></li>
-					<li><a href="">菜单一号</a></li>
+				
+				<if condition="$menu" >
+					<volist name="menu" id="vo">
+						<li><a href="{:U('Wap/index',array('mid'=>$key))}">{$vo.name}</a></li>
+					</volist>
+				</if>
+				
 				</ul>
 			</div>
 		</div>
@@ -39,9 +43,9 @@
 	<!-- 轮播图区块 -->
 	<div class="banner_out">
 		<ul class="banner">
-			<li style="display:block" ><a href=""><img src="__PUBLIC__/wap/imgs/banner_3.jpg" alt=""></a></li>
-			<li><a href=""><img src="__PUBLIC__/wap/imgs/banner_2.jpg" alt=""></a></li>
-			<li><a href=""><img src="__PUBLIC__/wap/imgs/banner_1.jpg" alt=""></a></li>
+			<li style="display:block" ><a href="https://s.click.taobao.com/t?e=m%3D2%26s%3Dsnc8HsOaatAcQipKwQzePDAVflQIoZepK7Vc7tFgwiFRAdhuF14FMfNIllVMwyqe5x%2BIUlGKNpX7NDlUe4zrD85rL6%2B3ebJGvjgwhljQPRISTh4%2BjuLDMnEs4zbGlStEcSpj5qSCmbA%3D"><img src="__PUBLIC__/wap/imgs/handu.jpeg" alt=""></a></li>
+			<li><a href="https://s.click.taobao.com/t?e=m%3D2%26s%3DiT2vICKn9mYcQipKwQzePDAVflQIoZepK7Vc7tFgwiFRAdhuF14FMVF3uJ%2FJRD60J1gyddu7kN%2F7NDlUe4zrD85rL6%2B3ebJGvjgwhljQPRL7hjGohvUgiRE%2BS%2BmISuKycSpj5qSCmbA%3D"><img src="__PUBLIC__/wap/imgs/jinba.jpeg" alt=""></a></li>
+			<li><a href="https://s.click.taobao.com/t?e=m%3D2%26s%3D1D%2B0ytKLDUocQipKwQzePDAVflQIoZepK7Vc7tFgwiFRAdhuF14FMXqr%2F2Y6kas%2BRitN3%2FurF3z7NDlUe4zrD85rL6%2B3ebJGvjgwhljQPRLwKLe9b2nHWjRxRM4LWCCixgxdTc00KD8%3D"><img src="__PUBLIC__/wap/imgs/lankou.jpeg" alt=""></a></li>
 		</ul>
 		<ol class="banner_nums">
 			<li class="current"></li>
@@ -69,7 +73,11 @@
 		
 			<div class="one_out">
 				<b class="is_new"></b>
-				<div class="one_img" style="overflow:hidden"><a href="http://item.jd.com/1181506101.html"><img src="{$vo.img_url}" alt="{$vo.g_name}"></a></div>
+				<div class="one_img" style="overflow:hidden">
+				<a href="{:U('index/detail',array('id'=>$vo['id']))}">
+					<img src="{$vo.img_url}" alt="{$vo.g_name}" style="height:244px;">
+					</a>
+				</div>
 				<p class="title">
 					<span>[包邮]</span><a href="">{$vo.g_name}</a>
 				</p>
@@ -80,7 +88,7 @@
 					<p class="old_price">
 						<span>￥3.5</span>
 					</p>
-					<a href="" class="buy">去看看</a>
+					<a href="{$vo.coupon_url}" class="buy"><if condition="$vo['coupon_money_num']">{:intval($vo['coupon_money_num'])}元卷<else/>去看看</if> </a>
 				</div>
 			</div>		
 			
@@ -99,6 +107,8 @@
 	
 </div>
 <!-- 底部区块结束 -->
+
+<a href="javascript:scroll(0,0);" class="toTop"></a>
 </body>
 <script type="text/javascript">
 !function(e) {
@@ -139,6 +149,7 @@
 		},
 		scrolls : function() {   //  无限追加
 			var page = 1;
+			var mid = $('.header_out').attr('mid');
 			$(window).scroll(function() {
 				// 获得内容总高度
 				var main_height = e('.one_out').height()*e('.one_out').length;
@@ -150,14 +161,10 @@
 				var bottom = main_height/2-window_height-scroll_height;
 				// document.title = bottom;
 				if ( bottom<0 ) {
-					/*++page;
-					e.post('http://127.0.0.1/CodeIgniter-3.0.0/index.php/admin/admin/append',{page:page},function(data) {
-						e('.bd_left').append(data.leftStr);
-						e('.bd_right').append(data.rightStr)
-					},'JSON');*/
-				var str = "<div class='one_out'><div class='one_img'><a href=''><img src='http://localhost/heibaiweb/Public/imgs/goods_2.jpg' alt=''></a></div><p class='title'><span>[包邮]</span><a href=''>便携玻璃杯(300ml)</a></p><div class='price'><p class='new_price'><b>￥</b><span>4.9</span></p><p class='old_price'><span>￥16.8</span></p><a href='' class='buy'>去看看</a></div></div>";
-					e('.bd_left').append(str);
-					e('.bd_right').append(str);
+					++page;
+					e.post("{:U('wap/append')}",{page:page,mid:mid},function(str) {
+						e('.bd_right').append(str); 
+					},'JSON');
 				};
 
 			})
