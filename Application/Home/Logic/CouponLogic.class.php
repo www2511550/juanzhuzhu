@@ -59,11 +59,16 @@ class CouponLogic
                 $val && $whereStr .= " AND g_name like '%".$val."%'";
             }
         }
-        // 分页类
-        $count = $couponModel->where($whereStr)->count();
-        $Page = new \Think\Page($count,$rows);
-        $data['page'] = $Page->show();
-        $kwData = $couponModel->where($whereStr)->order($orderStr)->limit($Page->firstRow.','.$Page->listRows)->select();
+        if ( $is_mobile ) {  // 手机端
+        	$limit = ($p-1)*$rows.','.$rows;
+        	$kwData = $couponModel->where($whereStr)->order($orderStr)->limit($limit)->select();
+        }else{
+        	// 分页类
+        	$count = $couponModel->where($whereStr)->count();
+        	$Page = new \Think\Page($count,$rows);
+        	$data['page'] = $Page->show();
+        	$kwData = $couponModel->where($whereStr)->order($orderStr)->limit($Page->firstRow.','.$Page->listRows)->select();
+        }
         $data['data'] = $this->getKwData($kwData,$arrKw);
         return $data;
     }
@@ -128,6 +133,7 @@ class CouponLogic
 			$data[$key] = $val;
 			preg_match('/(\d{1,3}).*(\d{1,3})/', $val['coupon_money'], $coupon_num);
 			$data[$key]['coupon_money_num'] = array_pop($coupon_num);
+			$data[$key]['price'] = $val['price'] - $data[$key]['coupon_money_num'];
     	}
     	return $data;
     }

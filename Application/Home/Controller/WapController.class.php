@@ -38,10 +38,15 @@ class WapController extends BaseController{
 	function append(){
 		$page = I('page',1);
 		$mid = I('mid',1);
+		$kw = trim(I('kw'));
 		// 目录
 		$str = '';
 		$menuData = $this->getMenu();
-		$data = $this->couponLogic->getMenuData(array('mid'=>$mid,'menuData'=>$menuData,'rows'=>10,'p'=>$page));
+		if ( $kw ) {
+			$data = $this->couponLogic->getSearchData(array('kw'=>$kw,'p'=>$page,'is_mobile'=>1));
+		}else{
+			$data = $this->couponLogic->getMenuData(array('mid'=>$mid,'menuData'=>$menuData,'rows'=>10,'p'=>$page));
+		}
 		if ( $data ) {
 			$data['data'] = $this->couponLogic->formatData($data['data']);
 			foreach ( $data['data'] as $vo ) {
@@ -49,18 +54,18 @@ class WapController extends BaseController{
 				<b class="is_new"></b>
 				<div class="one_img" style="overflow:hidden">
 				<a href="">
-					<img src="'.$vo['img_url'].'" alt="'.$vo['g_name'].'" style="height:244px;">
+					<img src="'.$vo['img_url'].'" alt="'.$vo['g_name'].'" style="height:160px;">
 					</a>
 				</div>
 				<p class="title">
-					<span>[包邮]</span><a href="">'.$vo['g_name'].'</a>
+					<span></span><a href="">'.$vo['g_name'].'</a>
 				</p>
 				<div class="price">
 					<p class="new_price">
-						<b>￥</b><span>'.$vo['price'].'</span>
+						卷后<b>￥</b><span>'.$vo['price'].'</span>
 					</p>
 					<p class="old_price">
-						<span>￥3.5</span>
+						<span></span>
 					</p>
 					<a href="" class="buy">'.($vo['coupon_money_num'] ? $vo['coupon_money_num'].'元卷' : '去看看').'</a>
 				</div>

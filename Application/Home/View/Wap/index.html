@@ -12,7 +12,7 @@
 </head>
 <body style="background:#EDECEA" onload='cc._init()'>
 <!-- 头部区块 -->
-<div class="header_out" mid="{:I('mid',1)}">
+<div class="header_out" mid="{:I('mid',1)}" kw="{:I('kw')}">
 	<!-- 头部搜索区块 -->
 	<div class="top_out_rel" id="top">
 		<div class="top_left">
@@ -58,10 +58,11 @@
 
 <!-- 中间商品展示区块 -->
 <div class="body_out">
-<!-- 	<div class="bd_top">
-	<img src="__PUBLIC__/imgs/banner_2.jpg" alt="">
-	<img src="__PUBLIC__/imgs/banner_1.jpg" alt="">
-</div> -->
+<div class="bd_top">
+	<div class="text">
+         <span class="index" style="padding-top: 3px;line-height: 21px;">{$menu[$_GET['mid']] ? $menu[$_GET['mid']]['name'] : '独家优惠券直播'}&nbsp;&nbsp;</span>
+     </div>
+</div>
 	<div class="body">
 	
 <if condition="$data">	
@@ -75,18 +76,18 @@
 				<b class="is_new"></b>
 				<div class="one_img" style="overflow:hidden">
 				<a href="{:U('index/detail',array('id'=>$vo['id']))}">
-					<img src="{$vo.img_url}" alt="{$vo.g_name}" style="height:244px;">
+					<img src="{$vo.img_url}" alt="{$vo.g_name}" style="height:160px;">
 					</a>
 				</div>
 				<p class="title">
-					<span>[包邮]</span><a href="">{$vo.g_name}</a>
+					<span><!-- [包邮] --></span><a href="">{$vo.g_name}</a>
 				</p>
 				<div class="price">
 					<p class="new_price">
-						<b>￥</b><span>{$vo.price}</span>
+						卷后<b>￥</b><span>{$vo.price}</span>
 					</p>
 					<p class="old_price">
-						<span>￥3.5</span>
+						<span><!-- ￥3.5 --></span>
 					</p>
 					<a href="{$vo.coupon_url}" class="buy"><if condition="$vo['coupon_money_num']">{:intval($vo['coupon_money_num'])}元卷<else/>去看看</if> </a>
 				</div>
@@ -108,7 +109,7 @@
 </div>
 <!-- 底部区块结束 -->
 
-<a href="javascript:scroll(0,0);" class="toTop"></a>
+<a href="javascript:scroll(0,0);" class="toTop"><img src="__PUBLIC__/images/top.png" width="33" height="33" /></a>
 </body>
 <script type="text/javascript">
 !function(e) {
@@ -150,6 +151,7 @@
 		scrolls : function() {   //  无限追加
 			var page = 1;
 			var mid = $('.header_out').attr('mid');
+			var kw = $('.header_out').attr('kw');
 			$(window).scroll(function() {
 				// 获得内容总高度
 				var main_height = e('.one_out').height()*e('.one_out').length;
@@ -162,7 +164,7 @@
 				// document.title = bottom;
 				if ( bottom<0 ) {
 					++page;
-					e.post("{:U('wap/append')}",{page:page,mid:mid},function(str) {
+					e.post("{:U('wap/append')}",{page:page,mid:mid,kw:kw},function(str) {
 						e('.bd_right').append(str); 
 					},'JSON');
 				};

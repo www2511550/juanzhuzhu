@@ -30,13 +30,16 @@
     </div>
 </div>
 <div class="header">
-    <div class="header_inner">
+    <div class="header_inner" style="position:relative;">
         <div class="logo"><img src="__PUBLIC__/images/juanzhuzhu.jpg" height="70px" alt=""></div>
         <div class="search">
         <form>
             <input type="text" class="text" name="kw" <if condition="I('kw')">value="{:I('kw')}" <else/>placeholder="外套 女 宽松"</if> >
             <input type="submit" class="searchBtn" value="搜索">
         </form>
+        </div>
+        <div class="img_right" style="position:absolute;right:5px;top:16px;">
+        	<img src="__PUBLIC__/images/right.png" height="40" />
         </div>
     </div>
     <div class="nav">
