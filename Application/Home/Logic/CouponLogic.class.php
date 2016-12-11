@@ -22,7 +22,7 @@ class CouponLogic
         $p = $p ? $p : $_GET['p'];
         // 优惠卷模型
         $couponModel = M('coupon');
-        $whereStr = " 1 ";//.$this->getTimeCondition();
+        $whereStr = " 1 ".$this->getTimeCondition();
         $rows = $rows ? $rows : 24 ;
         // 排序
         $orderStr = $this->getOrderStr($params);
@@ -133,9 +133,36 @@ class CouponLogic
 			$data[$key] = $val;
 			preg_match('/(\d{1,3}).*(\d{1,3})/', $val['coupon_money'], $coupon_num);
 			$data[$key]['coupon_money_num'] = array_pop($coupon_num);
-			$data[$key]['price'] = $val['price'] - $data[$key]['coupon_money_num'];
+			$data[$key]['price'] = abs($val['price'] - $data[$key]['coupon_money_num']);
     	}
     	return $data;
+    }
+
+    /**
+     * 自动统计优惠卷数量
+     */
+    public function autoCountCouponNum($page = 1) {
+        $page = $page ? $page : 1;
+        $rows = $rows ? $rows : 50;
+        $couponModel = M('coupon');
+
+        $whereStr = " 1 ".$this->getTimeCondition();
+        $limitStr = ($page-1)*$rows.','.$rows;
+        $data = $couponModel->where($whereStr)->limit($limitStr)->select();
+        if ( $data ) {
+            $del_ids = $update_ids = array();
+            foreach ($data as $key => $value) {
+                $res = $this->checkCoupon($value['id']);
+                if ( $res['result']['amount'] ) {
+                    $update_ids[$key]['id'] = $value['id'];
+                    $coupon_num = intval($res['result']['amount'])*10 + intval($res['result']['startFee']);
+                    $couponModel->where(array('id'=>$value['id']))->save(array('coupon_num'=>$coupon_num));
+                }else{
+                    $del_ids[] = $value['id'];
+                }
+            }
+            if ( $del_ids ) $couponModel->where(array('id'=>array('IN', $del_ids)))->delete();
+        }
     }
 
 

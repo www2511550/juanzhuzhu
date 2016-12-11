@@ -25,6 +25,8 @@ class IndexController extends BaseController
         $menuData = $this->getMenu(); 
         $couponLogic = D('Home/Coupon','Logic');
                 
+$couponLogic->autoCountCouponNum();
+
         if ( $kw ) {  // 关键字搜索
             $data = $couponLogic->getSearchData(array('kw'=>$kw,'sid'=>$sid,'sort'=>$sort));
         }else{
@@ -64,6 +66,13 @@ class IndexController extends BaseController
         }
         header("Location:$to_url");
     }
+    /**
+     * 登陆
+     */
+    public function login(){
+    	$this->display();
+    }
+    
     /**
      * 抽奖
      */
@@ -420,5 +429,43 @@ class IndexController extends BaseController
             $result['status'] = 0 ;
             $this->ajaxReturn($result);
         }
+    }
+    
+    public function append(){
+    	$page = I('page',1);
+    	$mid = I('mid',1);
+    	$kw = trim(I('kw'));
+    	$couponLogic = D('Home/Coupon','Logic');
+    	// 目录
+    	$str = '';
+    	$menuData = $this->getMenu();
+    	if ( $kw ) {
+    		$data = $couponLogic->getSearchData(array('kw'=>$kw,'p'=>$page,'is_mobile'=>1));
+    	}else{
+    		$data = $couponLogic->getMenuData(array('mid'=>$mid,'menuData'=>$menuData,'rows'=>10,'p'=>$page));
+    	}
+    	if ( $data ) {
+    		$data['data'] = $couponLogic->formatData($data['data']);
+    		foreach ( $data['data'] as $vo ) {
+    			$str .= '<li class="one_goods">
+				            <div class="pic">
+				                <a href="'.U('index/detail',array('id'=>$vo['id'])).'" target="_blank">
+				                    <img class="lazy" width="253" height="253" src="'.$vo['img_url'].'" alt="" />
+				                </a>
+				                <b class="is_new"></b>
+				            </div>
+				            <h3><a href="'.U('index/detail',array('id'=>$vo['id'])).'">'.$vo['g_name'].'</a></h3>
+				            <div class="text">
+				                <h5>限时秒杀价：<span><b>￥</b>'.$vo['price'].'</span></h5>
+				                <a href="'.U('index/detail',array('id'=>$vo['id'],'quan'=>1)).'" target="_blank"><span>点我领券：'.$vo['coupon_money'].'</span></a>
+				                <!-- <b class="fav"><img style="width:18px;height:16px;" src="__PUBLIC__/images/fav.png"></b> -->
+				            </div>
+				            <div class="info">
+				                <span>'.$vo['shop_name'].'</span><span class="sale_num">已售: <b>'.$vo['sale_num'].'</b> 件</span>
+				            </div>
+				        </li>';
+    		}
+    	}
+    	$this->ajaxReturn($str);
     }
 }

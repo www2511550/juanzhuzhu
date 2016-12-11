@@ -29,12 +29,11 @@ function is_mobile() {
 
     $found_mobile=CheckSubstrs($mobile_os_list,$useragent_commentsblock) ||
     CheckSubstrs($mobile_token_list,$useragent);
-
-    if ($found_mobile){
+	
+    if ($found_mobile || 'm' == substr($_SERVER['SERVER_NAME'], 0,1) ){
         return true;
     }else{
-        // return false;
-        return true;
+        return false;
     }
 }
 function CheckSubstrs($substrs,$text){

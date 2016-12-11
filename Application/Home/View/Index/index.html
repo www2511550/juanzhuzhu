@@ -20,6 +20,31 @@
             threshold : 0
         });
 		
+    	//  无限追加
+        function scrolls() {   
+			var page = 1;
+			var mid = $('.header').attr('mid');
+			var kw = $('.header').attr('kw');
+			$(window).scroll(function() {
+				// 获得内容总高度
+				var main_height = $('.one_goods').height()*$('.one_goods').length;
+				// 获得已经滚动上去的高度
+				var scroll_height = $(document).scrollTop();
+				// 获得可视区域高度
+				var window_height = $(window).height();
+				// 计算距离底部的距离
+				var bottom = main_height/1.5-window_height-scroll_height;
+				// document.title = main_height/1.5+ '|' + window_height +'|' + scroll_height;
+				if ( bottom<0 ) {
+					++page;
+					$.post("{:U('Index/append')}",{page:page,mid:mid,kw:kw},function(str) {
+						$('.goods_out').append(str); 
+					},'JSON');
+				};
+
+			})
+		}
+        scrolls();
     </script>
 
 </head>
@@ -29,7 +54,7 @@
         <p>卷猪猪-优惠券折扣直播第一站！每天更新千款优惠券商品，纯人工筛选验货，限时限量特卖，全场1折包邮！</p>
     </div>
 </div>
-<div class="header">
+<div class="header" mid="{:I('mid', 1)}" kw="{:I('kw')}" >
     <div class="header_inner" style="position:relative;">
         <div class="logo"><img src="__PUBLIC__/images/juanzhuzhu.jpg" height="70px" alt=""></div>
         <div class="search">
@@ -67,10 +92,10 @@
 <!-- 排序结束 -->
 
 <div class="main">
-    <ul>
+    <ul class="goods_out">
 
     <volist name="data" id="vo"> 
-        <li>
+        <li class="one_goods">
             <div class="pic">
                 <a href="{:U('index/detail',array('id'=>$vo['id']))}" target="_blank">
                     <img class="lazy" width="253" height="253" data-original="{$vo['img_url']}" alt="" />
@@ -91,7 +116,7 @@
         
     </ul>
     
-    <div class="page">{$page}</div>
+    <!-- <div class="page">{$page}</div> -->
 </div>
 
 <!-- 猜你喜欢 -->
@@ -111,7 +136,7 @@
             </div>
             <h3><a href="{:U('index/detail',array('id'=>$vo['id']))}">{$vo['g_name']}</a></h3>
             <div class="text">
-                <h5>限时秒杀价：<span><b>￥</b>{$vo['price']}</span></h5>
+                <h5>限时卷后价：<span><b>￥</b>{$vo['price']}</span></h5>
                 <a href="{:U('index/detail',array('id'=>$vo['id'],'quan'=>1))}" target="_blank"><span>点我领券：{$vo['coupon_money']}</span></a>
                 <!-- <b class="fav"><img style="width:18px;height:16px;" src="__PUBLIC__/images/fav.png"></b> -->
             </div>

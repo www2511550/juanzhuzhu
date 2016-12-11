@@ -75,7 +75,8 @@ ul.banner>li>a>img{
 	width: 98%;height: auto;margin: 0 auto;
 }
 .bd_top{
-	width: 96%;height: 45px;margin: 0 auto;
+	color: #363535;border-left: 0.2em solid #FF6600;line-height: 1.4em;margin: 2% 4%;padding-left: 0.5em;
+    font-weight: bolder;position: relative;font-size:16px;
 }
 .bd_top>img{
 	width: 44%;height: 45px;float: left;margin-left: 12px;border-radius: 5px;
@@ -87,7 +88,7 @@ ul.banner>li>a>img{
 	width:100%;margin:0 auto;
 }
 .body>div>.one_out{
-	width: 45%;height: 330px;background: #fff;margin-bottom: 12px;border-radius: 2px;overflow: hidden;float:left;
+	width: 45%;height: auto;background: #fff;margin-bottom: 12px;border-radius: 2px;overflow: hidden;float:left;
 	margin-left:4%;position:relative;
 }
 .is_new{
@@ -98,7 +99,7 @@ ul.banner>li>a>img{
 	width: 100%;
 }
 .one_out p.title{
-	width: 100%;text-align: center;line-height: 18px;color: #444;padding: 2px;
+	width: 100%;text-align: center;line-height: 18px;color: #444;padding: 2px;height:36px;overflow:hidden;
 }
 .one_out p.title>a{
 	color: #444;
@@ -131,8 +132,7 @@ ul.banner>li>a>img{
 
 
 .toTop{
-	display:inline-block;width:33px;height:33px;position:fixed;right:5%;bottom:5%;border-radius:50%;
-	background:url('../../images/top.png') center;background-repeat: no-repeat;}
+	display:inline-block;width:33px;height:33px;position:fixed;right:5%;bottom:5%;border-radius:50%;overflow:hidden;}
 }
 
 
