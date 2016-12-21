@@ -12,7 +12,7 @@ class CouponController extends AuthController{
 		$count = $couponModel->where($whereStr)->count();
 		$Page = new \Think\Page($count,15);
 		$data['page'] = $Page->show();
-		$data['data'] = $couponModel->where($whereStr)->order('end_time')->limit($Page->firstRow.','.$Page->listRows)->select();
+		$data['data'] = $couponModel->where($whereStr)->order('end_time desc')->limit($Page->firstRow.','.$Page->listRows)->select();
 		$this->assign($data);
 		$this->display();
 	}

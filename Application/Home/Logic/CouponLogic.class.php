@@ -19,7 +19,7 @@ class CouponLogic
     public function getMenuData($params){
     	$data = array();
         extract($params);
-        $p = $p ? $p : $_GET['p'];
+        $_GET['p'] = $p ? $p : $_GET['p'];
         // 优惠卷模型
         $couponModel = M('coupon');
         $whereStr = " 1 ".$this->getTimeCondition();
@@ -35,8 +35,10 @@ class CouponLogic
         if ( $tmpData = S($dataKey) ) {
         	return json_decode($tmpData, true);
         }
+        $data['total'] = $count;
         $data['page'] = $Page->show();
         $data['data'] = $couponModel->where($whereStr)->order($orderStr)->limit($Page->firstRow.','.$Page->listRows)->select();
+//         echo $couponModel->_sql().'<br/>';
     	S($dataKey, json_encode($data), 60);
         return $data;
     }
@@ -80,7 +82,7 @@ class CouponLogic
     public function getOrderStr($params){
     	$sort = $params['sort'];
     	$sid = $params['sid'];
-    	$orderStr = 'rand()';
+    	$orderStr = 'end_time desc';
     	// 排序
     	$desc = intval($sid) ? ' desc ' : ' asc ';
     	$arrOrder = array('price'=>' price ', 'sale' => ' sale_num ');

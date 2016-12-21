@@ -20,6 +20,9 @@ input{border: none;}
 .header .nav{background: #00aa88;height: 35px;padding-left: 12px;}
 .header .nav a{display: inline-block;height: 30px;padding: 0 20px;margin: 5px 2px 0 3px;color: #fff;line-height: 30px;}
 .header .nav .active{background: #fff;color: #00aa88;}
+.login_register{margin-right:50px;float:right}
+.login_register>a{color:#fff;}
+.login_register>a:hover{color:#ff6600;}
 
 .sort_out{
 	width: 1200px;height: auto;margin: 0 auto;

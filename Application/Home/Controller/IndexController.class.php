@@ -7,6 +7,9 @@ class IndexController extends BaseController
 {
 	public function __construct(){
 		parent::__construct();
+		if ( isset($_GET['login']) ) {
+			redirect(U('index/login'));
+		}
 		if( is_mobile() ){
 			redirect(U('Wap/index'));
 		}
@@ -70,9 +73,77 @@ $couponLogic->autoCountCouponNum();
      * 登陆
      */
     public function login(){
-    	$this->display();
+    	if ( !IS_POST) {
+    		$this->assign('action','login');
+    		$this->display();
+    	}else{
+    		$username = trim(I('username'));
+    		$pwd = trim(I('pwd'));
+    		!$username && $this->error('用户名不能为空！');
+    		!$pwd && $this->error('密码不能为空！');
+    		// 查找当前登陆人信息
+    		$info = M('user')->where(array('username'=>$username))->find();
+    		!$info && $this->error('用户名不存在！');
+    		$info['pwd'] !== md5(md5( C('PWD_KEY').$pwd )) && $this->error('密码错误！');
+    		session('user_id', $info['user_id']);
+    		session('username', $info['username']);
+    		redirect(U('index/index'));
+    	}
+
     }
-    
+    /**
+     * 注册
+     */
+    public function register(){
+    	if ( !IS_POST) {
+    		$this->assign('action','register');
+    		$this->display('login');
+    	}else{
+    		$username = trim(I('username'));
+    		$pwd = trim(I('pwd'));
+    		!$username && $this->error('用户名不能为空！');
+    		!$pwd && $this->error('密码不能为空！');
+    		// 查找当前登陆人信息
+    		$info = M('user')->where(array('username'=>$username))->find();
+    		$info && $this->error('用户名存在，请登录！');
+    		$pwdStr = md5(md5( C('PWD_KEY').$pwd ));
+    		$insertData = array('username'=>$username,'pwd'=>$pwdStr,'lastLoginTime'=>date('Y-m-d H:i:s'),'addtime'=>time(),'ip'=>get_client_ip() );
+    		$status = M('user')->add($insertData);
+    		session('user_id', $status);
+    		session('username', $username);
+    		$status ? $this->success('注册成功！',U('index/index')) : $this->error('注册失败，稍后再试！');
+    	}
+    }
+    /**
+     * 重置密码
+     */
+    public function reset(){
+    	if ( !IS_POST) {
+    		$this->assign('action','reset');
+    		$this->display('login');
+    	}else{
+    		$username = trim(I('username'));
+    		$pwd = trim(I('pwd'));
+    		!$username && $this->error('用户名不能为空！');
+    		!$pwd && $this->error('密码不能为空！');
+    		// 查找当前登陆人信息
+    		$info = M('user')->where(array('username'=>$username))->find();
+    		!$info && $this->error('用户名不存在！');
+    		$info['pwd'] !== md5(md5( C('PWD_KEY').$pwd )) && $this->error('密码错误！');
+    		unset($info['pwd']);
+    		session('user_id', $info['user_id']);
+    		session('username', $info['username']);
+    		redirect(U('index/index'));
+    	}
+    }
+    /**
+     * 退出
+     */
+    public function out(){
+    	session('user_id', null);
+    	session('username', null);
+    	$this->success('退出成功！', U('index/index'));
+    }
     /**
      * 抽奖
      */
